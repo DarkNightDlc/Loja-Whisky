@@ -53,13 +53,13 @@ export default function Home() {
     <>
       <section className="mx-auto max-w-[1440px] px-5 gap-5 flex">
         <nav className=' h-full flex justify-center'>
-          <ul className='px-5 py-4 font-bold text-2xl flex flex-col'>
-            <li><button onClick={()=>handleResetProdutosExibidos()}>Todos</button></li>
-            <li><button onClick={()=>handleNationalityFilter("escoces")}>Escoces</button></li>
-            <li><button onClick={()=>handleNationalityFilter("americano")}>Americano</button></li>
-            <li><button onClick={()=>handleNationalityFilter("indiano")}>Indiano</button></li>
-            <li><button onClick={()=>handleNationalityFilter("irlandes")}>Irlandes</button></li>
-            <li><button onClick={()=>handleNationalityFilter("japones")}>Japones</button></li>
+          <ul className='px-5 py-4 font-bold text-2xl flex flex-col gap-5'>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./icon.png"/><button onClick={()=>handleResetProdutosExibidos()}>Todos</button></li>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./Paises/Flag_of_escocia.png"/><button onClick={()=>handleNationalityFilter("escoces")}>Escoces</button></li>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./Paises/Flag_of_EUA.png"/><button onClick={()=>handleNationalityFilter("americano")}>Americano</button></li>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./Paises/Flag_of_India.svg.png"/><button onClick={()=>handleNationalityFilter("indiano")}>Indiano</button></li>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./Paises/Flag_of_Ireland.svg.png"/><button onClick={()=>handleNationalityFilter("irlandes")}>Irlandes</button></li>
+            <li className='flex gap-3'><img className='w-12 h-12 rounded-3xl' src="./Paises/Flag_of_japao.jpg"/><button onClick={()=>handleNationalityFilter("japones")}>Japones</button></li>
           </ul>
         </nav>
         <main className='flex flex-wrap gap-5 p-5 items-center justify-center'>

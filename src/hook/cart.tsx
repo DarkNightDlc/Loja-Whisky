@@ -124,7 +124,7 @@ export function CartProvider({ children }:CycleContextProviderProps){
 
     const removeNewItem = (itemId: number)=>{
         dispatch({
-            type: "ADD_PRODUCT",
+            type: "REMOVE_PRODUCT",
             itemId,
         })
     }
