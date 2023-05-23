@@ -1,9 +1,24 @@
 import { Roboto } from 'next/font/google'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Dialog, Popover, Transition } from '@headlessui/react'
-
+import ItemMenu from '@/components/ItemMenu';
+import { CartContext, ItemProps } from '@/hook/cart';
 const axios = require('axios');
-// import { instance } from "./api/api"
+
+const roboto = Roboto({weight:['100','300','400','500','700','900'], subsets:['latin']})
+
+// createServer({
+//   routes() {
+//     this.get("/api/produtos", () => [
+//       { id: "0", nationality:"americano", price: 30, name: "Bulleit Bourbon",   imageUrl: "./produtos/americanos/bulleit_bourbon.png"},
+//       { id: "1", nationality:"americano", price: 30, name: "Jack Daniels",      imageUrl: "./produtos/americanos/jack_daniels.png"},
+//       { id: "2", nationality:"americano", price: 30, name: "Jim Beam",          imageUrl: "./produtos/americanos/jim_beam.png"},
+//       { id: "3", nationality:"americano", price: 30, name: "Woodford_Reserve",  imageUrl: "./produtos/americanos/woodford_reserve.png"},
+//       { id: "4", nationality:"americano", price: 30, name: "Wild Turkey",       imageUrl: "./produtos/americanos/wild_turkey.png"},
+//       { id: "5", nationality:"escoces", price: 30, name: "Old Porr",       imageUrl: "./produtos/escoces/old_porr.png"},
+//     ])
+//   },
+// })
 
 interface ResponseProps{
   name : string;
@@ -11,53 +26,45 @@ interface ResponseProps{
   imageUrl: string;
 }
 
-import { createServer } from "miragejs"
-import ItemMenu from '@/components/ItemMenu';
-
-createServer({
-  routes() {
-    this.get("/api/produtos", () => [
-      { id: "0", name: "12 Anos", price: 30, imageUrl: "./produtos/12_anos.png"},
-      { id: "1", name: "Apple", price: 30, imageUrl: "./produtos/apple.png"},
-      { id: "2", name: "Buchanas", price: 30, imageUrl: "./produtos/buchanas.png"},
-      { id: "3", name: "Chivas", price: 30, imageUrl: "./produtos/chivas.png"},
-      { id: "4", name: "Grenn", price: 30, imageUrl: "./produtos/green.png"},
-      { id: "5", name: "Jack", price: 30 , imageUrl: "./produtos/jack.png"},
-      { id: "6", name: "Old Par", price: 30 , imageUrl: "./produtos/old_par.png"},
-      { id: "7", name: "Royal", price: 30, imageUrl: "./produtos/royal.png" }
-    ])
-  },
-})
-
-const roboto = Roboto({weight:['100','300','400','500','700','900'], subsets:['latin']})
-
 export default function Home() {
-  const [produtos, setProdutos] = useState<[ResponseProps] | []>([])
-  const [isOpen, setIsOpen] = useState(true)
+  const {produtos, searchForProducts} = useContext(CartContext);
+
+  const [produtosExibidos, setProdutosExibidos] = useState<[ItemProps] | []>(produtos)
+
+  function handleResetProdutosExibidos(){
+    setProdutosExibidos(produtos)
+  }
+
+  function handleNationalityFilter(nationality:string){
+    let newProdutosArray = produtos
+    setProdutosExibidos(newProdutosArray.filter(item=> item.nationality === nationality))
+  }
+  
 
   useEffect(() => {
-    axios.get('/api/produtos').then(
-      function (response) {
-        setProdutos(response.data)
-      }
-    )
+    searchForProducts()
   }, [])
+
+  useEffect(() => {
+    setProdutosExibidos(produtos)
+  }, [produtos])
 
   return (
     <>
       <section className="mx-auto max-w-[1440px] px-5 gap-5 flex">
-        <nav>
-          <ul className='px-5 py-4 font-bold text-2xl'>
-            <li><a href="">menu</a></li>
-            <li><a href="">menu</a></li>
-            <li><a href="">menu</a></li>
-            <li><a href="">menu</a></li>
-            <li><a href="">menu</a></li>
+        <nav className=' h-full flex justify-center'>
+          <ul className='px-5 py-4 font-bold text-2xl flex flex-col'>
+            <li><button onClick={()=>handleResetProdutosExibidos()}>Todos</button></li>
+            <li><button onClick={()=>handleNationalityFilter("escoces")}>Escoces</button></li>
+            <li><button onClick={()=>handleNationalityFilter("americano")}>Americano</button></li>
+            <li><button onClick={()=>handleNationalityFilter("indiano")}>Indiano</button></li>
+            <li><button onClick={()=>handleNationalityFilter("irlandes")}>Irlandes</button></li>
+            <li><button onClick={()=>handleNationalityFilter("japones")}>Japones</button></li>
           </ul>
         </nav>
         <main className='flex flex-wrap gap-5 p-5 items-center justify-center'>
             {
-              produtos.map(i=> <ItemMenu item={i} />)
+              produtosExibidos.map(i=> <ItemMenu item={i} />)
             }
         </main>
         <nav>
